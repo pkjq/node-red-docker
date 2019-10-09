@@ -5,6 +5,7 @@ ARG OS=alpine
 #### Stage BASE ########################################################################################################
 FROM ${ARCH}/node:${NODE_VERSION}-${OS} AS base
 ARG QEMU_ARCH
+ARG USER_UID=1000
 
 # QEMU - Quick Emulation
 COPY tmp/qemu-$QEMU_ARCH-static /usr/bin/qemu-$QEMU_ARCH-static
@@ -24,7 +25,7 @@ RUN set -ex && \
         openssh-client && \
     mkdir -p /usr/src/node-red /data && \
     deluser --remove-home node && \
-    adduser -h /usr/src/node-red -D -H node-red -u 1000 && \
+    adduser -h /usr/src/node-red -D -H node-red -u $USER_UID && \
     chown -R node-red:node-red /data && \
     chown -R node-red:node-red /usr/src/node-red
 

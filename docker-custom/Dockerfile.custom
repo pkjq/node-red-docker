@@ -5,6 +5,8 @@ ARG OS=alpine
 #### Stage BASE ########################################################################################################
 FROM ${ARCH}/node:${NODE_VERSION}-${OS} AS base
 
+ARG USER_UID=1000
+
 # Copy scripts
 COPY scripts/*.sh /tmp/
 
@@ -20,7 +22,7 @@ RUN set -ex && \
         openssh-client && \
     mkdir -p /usr/src/node-red /data && \
     deluser --remove-home node && \
-    adduser -h /usr/src/node-red -D -H node-red -u 1000 && \
+    adduser -h /usr/src/node-red -D -H node-red -u $USER_UID && \
     chown -R node-red:node-red /data && \
     chown -R node-red:node-red /usr/src/node-red
 
